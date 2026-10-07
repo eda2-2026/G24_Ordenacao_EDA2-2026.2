@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Mundo: jogo de adivinhação de países com Insertion Sort."
+  >
+
+  <title>Mundo — Insertion Sort</title>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <header class="cabecalho">
+    <strong class="logotipo">
+      MUNDO<span aria-hidden="true">●</span>
+    </strong>
+
+    <small>EDA2 · INSERTION SORT</small>
+  </header>
+
+  <main>
+    <section class="introducao">
+      <p class="rotulo">PAÍS DO DIA</p>
+
+      <h1>Reconhece esta silhueta?</h1>
+
+      <p>Descubra o país em até seis tentativas.</p>
+    </section>
+
+    <section
+      class="mapa"
+      aria-label="Silhueta do país do dia"
+    >
+      <svg
+        id="silhueta"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="País misterioso"
+      >
+        <path></path>
+      </svg>
+    </section>
+
+    <section class="jogo">
+      <form
+        id="form-palpite"
+        class="combobox"
+        novalidate
+      >
+        <label for="campo-pais">
+          Qual é o país?
+        </label>
+
+        <div class="linha-campo">
+          <input
+            id="campo-pais"
+            name="pais"
+            type="text"
+            maxlength="100"
+            autocomplete="off"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded="false"
+            aria-controls="lista-paises"
+            placeholder="Digite ou escolha um país"
+          >
+
+          <button
+            id="enviar-palpite"
+            type="submit"
+            disabled
+          >
+            PALPITAR
+          </button>
+        </div>
+
+        <ul
+          id="lista-paises"
+          role="listbox"
+          aria-label="Sugestões de países"
+          hidden
+        ></ul>
+      </form>
+
+      <aside
+        class="metricas"
+        aria-label="Métricas do algoritmo Insertion Sort"
+      >
+        <h2>Insertion Sort em execução</h2>
+
+        <dl>
+          <div>
+            <dt>Itens filtrados</dt>
+            <dd id="quantidade">0</dd>
+          </div>
+
+          <div>
+            <dt>Comparações</dt>
+            <dd id="comparacoes">0</dd>
+          </div>
+
+          <div>
+            <dt>Deslocamentos</dt>
+            <dd id="deslocamentos">0</dd>
+          </div>
+        </dl>
+
+        <p>
+          Complexidade no pior caso:
+          <strong>O(n²)</strong>
+        </p>
+      </aside>
+    </section>
+
+    <section
+      class="historico"
+      aria-labelledby="titulo-tentativas"
+    >
+      <div class="titulo-lista">
+        <h2 id="titulo-tentativas">Tentativas</h2>
+        <span id="contador">0 / 6</span>
+      </div>
+
+      <ol id="tentativas">
+        <li>
+          <span>1</span>
+          <b class="pais">—</b>
+          <strong class="distancia">—</strong>
+          <em class="direcao">—</em>
+        </li>
+
+        <li>
+          <span>2</span>
+          <b class="pais">—</b>
+          <strong class="distancia">—</strong>
+          <em class="direcao">—</em>
+        </li>
+
+        <li>
+          <span>3</span>
+          <b class="pais">—</b>
+          <strong class="distancia">—</strong>
+          <em class="direcao">—</em>
+        </li>
+
+        <li>
+          <span>4</span>
+          <b class="pais">—</b>
+          <strong class="distancia">—</strong>
+          <em class="direcao">—</em>
+        </li>
+
+        <li>
+          <span>5</span>
+          <b class="pais">—</b>
+          <strong class="distancia">—</strong>
+          <em class="direcao">—</em>
+        </li>
+
+        <li>
+          <span>6</span>
+          <b class="pais">—</b>
+          <strong class="distancia">—</strong>
+          <em class="direcao">—</em>
+        </li>
+      </ol>
+
+      <p
+        id="mensagem"
+        role="status"
+        aria-live="polite"
+      ></p>
+
+      <button
+        id="reiniciar"
+        type="button"
+        hidden
+      >
+        JOGAR NOVAMENTE
+      </button>
+    </section>
+  </main>
+
+  <script
+    type="module"
+    src="./src/app.js"
+  ></script>
+</body>
+</html>

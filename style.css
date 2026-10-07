@@ -1,0 +1,28 @@
+:root { --fundo:#f3efe5; --papel:#fffdf7; --tinta:#171716; --borda:#c9c2b4; --vermelho:#df4b31; --linha:44px; font-family:Inter,system-ui,sans-serif; color:var(--tinta); }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--fundo); }
+header { height:68px; padding:0 max(20px,calc((100vw - 900px)/2)); display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--borda); }
+header strong { font-size:1.45rem; letter-spacing:-.06em; } header span,.rotulo { color:var(--vermelho); } header small { letter-spacing:.12em; }
+main { width:min(900px,calc(100% - 32px)); margin:auto; padding-bottom:48px; }
+.introducao { text-align:center; padding:34px 0 22px; } .introducao p { color:#625d54; } .rotulo { font-size:.7rem; font-weight:900; letter-spacing:.18em; margin:0 0 8px; }
+h1 { margin:0; font-size:clamp(2rem,6vw,3.2rem); letter-spacing:-.05em; }
+.mapa { height:280px; background:#242422; padding:28px; overflow:hidden; display:grid; place-items:center; }
+.mapa svg { display:block; width:100%; height:100%; overflow:hidden; } .mapa path { fill:#f4f1e8; stroke:#111; vector-effect:non-scaling-stroke; }
+.jogo { display:grid; grid-template-columns:minmax(0,2fr) minmax(240px,1fr); gap:20px; margin-top:22px; align-items:start; }
+label { display:block; text-transform:uppercase; font-size:.72rem; font-weight:900; margin-bottom:8px; }
+.combobox { position:relative; z-index:2; } .linha-campo { display:flex; }
+input { flex:1; min-width:0; height:52px; background:var(--papel); border:1px solid var(--tinta); padding:0 14px; font:inherit; }
+button { min-height:44px; border:1px solid var(--tinta); background:var(--tinta); color:white; font-weight:900; padding:0 18px; cursor:pointer; }
+button:disabled { background:#aaa59b; border-color:#aaa59b; cursor:not-allowed; }
+#lista-paises { position:absolute; top:80px; left:0; right:102px; max-height:calc(var(--linha)*3); overflow-y:auto; margin:0; padding:0; list-style:none; border:1px solid var(--tinta); border-top:0; background:var(--papel); box-shadow:5px 6px 0 #0002; }
+#lista-paises li { height:var(--linha); padding:0 14px; display:flex; align-items:center; border-bottom:1px solid var(--borda); cursor:pointer; }
+#lista-paises li:hover,#lista-paises li[aria-selected="true"] { background:var(--tinta); color:white; } #lista-paises .vazio { color:#777; cursor:default; }
+.metricas { border:1px solid var(--tinta); background:var(--papel); padding:14px; } .metricas h2 { font-size:.86rem; margin:0 0 12px; text-transform:uppercase; }
+.metricas dl { display:grid; grid-template-columns:repeat(3,1fr); margin:0; } .metricas dl div { text-align:center; border-right:1px solid var(--borda); } .metricas dl div:last-child { border:0; }
+.metricas dt { font-size:.6rem; text-transform:uppercase; } .metricas dd { margin:4px 0 0; font-size:1.2rem; font-weight:900; } .metricas p { margin:12px 0 0; font-size:.75rem; text-align:center; }
+.historico { margin-top:28px; } .titulo-lista { display:flex; justify-content:space-between; align-items:center; } .titulo-lista h2 { font-size:.9rem; text-transform:uppercase; letter-spacing:.08em; }
+#tentativas { list-style:none; padding:0; margin:0; border-top:1px solid var(--tinta); } #tentativas li { min-height:46px; display:grid; grid-template-columns:36px 1fr 110px 48px; align-items:center; border-bottom:1px solid var(--borda); }
+#tentativas li span { color:#777; } #tentativas li strong,#tentativas li em { text-align:right; font-size:.82rem; font-style:normal; } #tentativas .correto { background:#dbeade; } #tentativas .perto { background:#f2e6bd; } #tentativas .longe { background:#ebd8d1; }
+#mensagem { min-height:24px; font-weight:750; } #reiniciar { display:block; margin-top:10px; } #reiniciar[hidden] { display:none; }
+@media (max-width:700px) { .jogo { grid-template-columns:1fr; } .mapa { height:230px; } #lista-paises { right:0; } }
+@media (max-width:480px) { header small { display:none; } .linha-campo { display:grid; gap:8px; } #lista-paises { top:80px; } #tentativas li { grid-template-columns:28px 1fr 86px 38px; } }
