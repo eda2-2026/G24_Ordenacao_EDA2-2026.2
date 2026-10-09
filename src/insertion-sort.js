@@ -24,3 +24,50 @@ export function insertionSort(lista, comparar) {
 
   return { itens, comparacoes, deslocamentos };
 }
+
+export function normalizarTexto(texto) {
+  return texto
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLocaleLowerCase("pt-BR");
+}
+
+export function ordenarPaisesParaBusca(paises, termoDigitado) {
+  const termo = normalizarTexto(termoDigitado);
+
+  const preparados = paises
+    .map((pais, indiceOriginal) => {
+      const nomeNormalizado = normalizarTexto(pais.nome);
+
+      return {
+        pais,
+        indiceOriginal,
+        nomeNormalizado,
+        comecaComTermo: nomeNormalizado.startsWith(termo),
+      };
+    })
+    .filter((item) => {
+      return !termo || item.nomeNormalizado.includes(termo);
+    });
+
+  const resultado = insertionSort(preparados, (a, b) => {
+    if (a.comecaComTermo !== b.comecaComTermo) {
+      return a.comecaComTermo ? -1 : 1;
+    }
+
+    const alfabetica = a.nomeNormalizado.localeCompare(
+      b.nomeNormalizado,
+      "pt-BR",
+    );
+
+    return alfabetica || a.indiceOriginal - b.indiceOriginal;
+  });
+
+  return {
+    paises: resultado.itens.map((item) => item.pais),
+    comparacoes: resultado.comparacoes,
+    deslocamentos: resultado.deslocamentos,
+  };
+}
