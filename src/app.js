@@ -221,6 +221,68 @@ function calcularDirecao(origem, destino) {
   return direcoes[Math.round(azimute / 45) % 8];
 }
 
+function enviarPalpite() {
+  const pais = estado.selecionado;
+
+  if (!pais || estado.encerrado) {
+    return;
+  }
+
+  if (
+    estado.tentativas.some(
+      (tentativa) => tentativa.codigo === pais.codigo,
+    )
+  ) {
+    elementos.mensagem.textContent = "Esse país já foi utilizado.";
+    return;
+  }
+
+  const correto = pais.codigo === estado.paisCorreto.codigo;
+
+  const tentativa = {
+    ...pais,
+    correto,
+    distancia: correto
+      ? 0
+      : Math.round(calcularDistancia(pais, estado.paisCorreto)),
+    direcao: correto
+      ? "—"
+      : calcularDirecao(pais, estado.paisCorreto),
+  };
+
+  estado.tentativas.push(tentativa);
+  fecharDropdown();
+
+  renderizarTentativa(
+    tentativa,
+    estado.tentativas.length - 1,
+  );
+
+  estado.encerrado =
+    correto ||
+    estado.tentativas.length === MAXIMO_TENTATIVAS;
+
+  elementos.contador.textContent =
+    `${estado.tentativas.length} / ${MAXIMO_TENTATIVAS}`;
+
+  elementos.campo.value = "";
+  estado.selecionado = null;
+  elementos.enviar.disabled = true;
+
+  if (estado.encerrado) {
+    elementos.campo.disabled = true;
+
+    elementos.mensagem.textContent = correto
+      ? `Você acertou! O país é ${estado.paisCorreto.nome}.`
+      : `Fim de jogo. O país era ${estado.paisCorreto.nome}.`;
+
+    elementos.reiniciar.hidden = false;
+  } else {
+    elementos.mensagem.textContent =
+      "Continue: use a distância e a direção.";
+  }
+}
+
 elementos.campo.addEventListener("focus", atualizarBusca);
 
 elementos.campo.addEventListener("input", () => {
@@ -262,6 +324,15 @@ document.addEventListener("pointerdown", (evento) => {
   ) {
     fecharDropdown();
   }
+});
+
+elementos.formulario.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+  enviarPalpite();
+});
+
+elementos.reiniciar.addEventListener("click", () => {
+  window.location.reload();
 });
 
 renderizarSilhueta();
