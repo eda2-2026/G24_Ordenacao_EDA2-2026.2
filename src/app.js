@@ -1,3 +1,7 @@
+import { PAISES } from "./dados-paises.js";
+import { ordenarPaisesParaBusca } from "./insertion-sort.js";
+
+const MAXIMO_TENTATIVAS = 6;
 const estado = {
   paisCorreto: escolherPaisDoDia(),
   filtrados: [],
@@ -33,6 +37,107 @@ function renderizarSilhueta() {
   elementos.silhueta.querySelector("path").setAttribute("d", estado.paisCorreto.path);
 }
 
+function atualizarBusca() {
+  const resultado = ordenarPaisesParaBusca(
+    PAISES,
+    elementos.campo.value,
+  );
+
+  estado.filtrados = resultado.paises;
+  estado.indiceAtivo = -1;
+
+  elementos.campo.removeAttribute("aria-activedescendant");
+  elementos.comparacoes.textContent = resultado.comparacoes;
+  elementos.deslocamentos.textContent = resultado.deslocamentos;
+  elementos.quantidade.textContent = resultado.paises.length;
+
+  renderizarDropdown();
+}
+
+function renderizarDropdown() {
+  elementos.lista.replaceChildren();
+
+  if (!estado.filtrados.length) {
+    const item = document.createElement("li");
+
+    item.className = "vazio";
+    item.textContent = "Nenhum país encontrado";
+
+    elementos.lista.append(item);
+  } else {
+    estado.filtrados.forEach((pais, indice) => {
+      const item = document.createElement("li");
+
+      item.id = `pais-${indice}`;
+      item.setAttribute("role", "option");
+      item.textContent = pais.nome;
+
+      item.setAttribute(
+        "aria-selected",
+        String(indice === estado.indiceAtivo),
+      );
+
+      item.addEventListener("pointerdown", (evento) => {
+        evento.preventDefault();
+        selecionarPais(pais);
+      });
+
+      elementos.lista.append(item);
+    });
+  }
+
+  elementos.lista.hidden = false;
+  elementos.campo.setAttribute("aria-expanded", "true");
+}
+
+function selecionarPais(pais) {
+  estado.selecionado = pais;
+  elementos.campo.value = pais.nome;
+  elementos.enviar.disabled = false;
+
+  fecharDropdown();
+}
+
+function fecharDropdown() {
+  elementos.lista.hidden = true;
+  estado.indiceAtivo = -1;
+
+  elementos.campo.setAttribute("aria-expanded", "false");
+  elementos.campo.removeAttribute("aria-activedescendant");
+}
+
+function moverSelecao(delta) {
+  if (elementos.lista.hidden) {
+    atualizarBusca();
+  }
+
+  if (!estado.filtrados.length) {
+    return;
+  }
+
+  if (estado.indiceAtivo === -1) {
+    estado.indiceAtivo = delta > 0
+      ? 0
+      : estado.filtrados.length - 1;
+  } else {
+    estado.indiceAtivo = (
+      estado.indiceAtivo + delta + estado.filtrados.length
+    ) % estado.filtrados.length;
+  }
+
+  [...elementos.lista.children].forEach((item, indice) => {
+    item.setAttribute(
+      "aria-selected",
+      String(indice === estado.indiceAtivo),
+    );
+  });
+
+  const ativo = elementos.lista.children[estado.indiceAtivo];
+
+  elementos.campo.setAttribute("aria-activedescendant", ativo.id);
+  ativo.scrollIntoView({ block: "nearest" });
+}
+
 function renderizarTentativa(tentativa, indice) {
   const linha = elementos.linhas[indice];
 
@@ -53,3 +158,48 @@ function renderizarTentativa(tentativa, indice) {
   linha.querySelector(".direcao").textContent =
     tentativa.direcao;
 }
+
+elementos.campo.addEventListener("focus", atualizarBusca);
+
+elementos.campo.addEventListener("input", () => {
+  estado.selecionado = null;
+  elementos.enviar.disabled = true;
+
+  atualizarBusca();
+});
+
+elementos.campo.addEventListener("keydown", (evento) => {
+  if (evento.key === "ArrowDown") {
+    evento.preventDefault();
+    moverSelecao(1);
+  }
+
+  if (evento.key === "ArrowUp") {
+    evento.preventDefault();
+    moverSelecao(-1);
+  }
+
+  if (evento.key === "Escape") {
+    fecharDropdown();
+  }
+
+  if (
+    evento.key === "Enter" &&
+    !elementos.lista.hidden &&
+    estado.indiceAtivo >= 0
+  ) {
+    evento.preventDefault();
+    selecionarPais(estado.filtrados[estado.indiceAtivo]);
+  }
+});
+
+document.addEventListener("pointerdown", (evento) => {
+  if (
+    evento.target instanceof Element &&
+    !evento.target.closest(".combobox")
+  ) {
+    fecharDropdown();
+  }
+});
+
+renderizarSilhueta();
