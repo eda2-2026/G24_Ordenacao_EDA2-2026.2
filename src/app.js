@@ -159,6 +159,68 @@ function renderizarTentativa(tentativa, indice) {
     tentativa.direcao;
 }
 
+function radianos(graus) {
+  return graus * Math.PI / 180;
+}
+
+function calcularDistancia(origem, destino) {
+  const raioTerra = 6371.0088;
+
+  const deltaLatitude = radianos(
+    destino.latitude - origem.latitude,
+  );
+
+  const deltaLongitude = radianos(
+    destino.longitude - origem.longitude,
+  );
+
+  const latitudeOrigem = radianos(origem.latitude);
+  const latitudeDestino = radianos(destino.latitude);
+
+  const haversine =
+    Math.sin(deltaLatitude / 2) ** 2 +
+    Math.cos(latitudeOrigem) *
+    Math.cos(latitudeDestino) *
+    Math.sin(deltaLongitude / 2) ** 2;
+
+  const valor = Math.min(1, Math.max(0, haversine));
+
+  return raioTerra * 2 * Math.atan2(
+    Math.sqrt(valor),
+    Math.sqrt(1 - valor),
+  );
+}
+
+function calcularDirecao(origem, destino) {
+  const latitudeOrigem = radianos(origem.latitude);
+  const latitudeDestino = radianos(destino.latitude);
+
+  const deltaLongitude = radianos(
+    destino.longitude - origem.longitude,
+  );
+
+  const y =
+    Math.sin(deltaLongitude) *
+    Math.cos(latitudeDestino);
+
+  const x =
+    Math.cos(latitudeOrigem) *
+    Math.sin(latitudeDestino) -
+    Math.sin(latitudeOrigem) *
+    Math.cos(latitudeDestino) *
+    Math.cos(deltaLongitude);
+
+  const azimute = (
+    Math.atan2(y, x) * 180 / Math.PI + 360
+  ) % 360;
+
+  const direcoes = [
+    "N", "NE", "L", "SE", "S", "SO", "O", "NO",
+  ];
+
+  return direcoes[Math.round(azimute / 45) % 8];
+}
+
 elementos.campo.addEventListener("focus", atualizarBusca);
 
 elementos.campo.addEventListener("input", () => {
