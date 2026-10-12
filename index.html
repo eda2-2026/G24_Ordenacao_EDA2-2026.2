@@ -44,8 +44,9 @@
         id="silhueta"
         preserveAspectRatio="xMidYMid meet"
         role="img"
-        aria-label="País misterioso"
+        aria-label="Silhueta do país misterioso"
       >
+        <title>Silhueta do país misterioso</title>
         <path></path>
       </svg>
     </section>
@@ -71,6 +72,7 @@
             aria-autocomplete="list"
             aria-expanded="false"
             aria-controls="lista-paises"
+            aria-haspopup="listbox"
             placeholder="Digite ou escolha um país"
           >
 
@@ -93,13 +95,15 @@
 
       <aside
         class="metricas"
-        aria-label="Métricas do algoritmo Insertion Sort"
+        aria-labelledby="titulo-metricas"
       >
-        <h2>Insertion Sort em execução</h2>
+        <h2 id="titulo-metricas">
+          Insertion Sort em execução
+        </h2>
 
         <dl>
           <div>
-            <dt>Itens filtrados</dt>
+            <dt>Itens encontrados</dt>
             <dd id="quantidade">0</dd>
           </div>
 
@@ -132,42 +136,42 @@
 
       <ol id="tentativas">
         <li>
-          <span>1</span>
+          <span class="numero">1</span>
           <b class="pais">—</b>
           <strong class="distancia">—</strong>
           <em class="direcao">—</em>
         </li>
 
         <li>
-          <span>2</span>
+          <span class="numero">2</span>
           <b class="pais">—</b>
           <strong class="distancia">—</strong>
           <em class="direcao">—</em>
         </li>
 
         <li>
-          <span>3</span>
+          <span class="numero">3</span>
           <b class="pais">—</b>
           <strong class="distancia">—</strong>
           <em class="direcao">—</em>
         </li>
 
         <li>
-          <span>4</span>
+          <span class="numero">4</span>
           <b class="pais">—</b>
           <strong class="distancia">—</strong>
           <em class="direcao">—</em>
         </li>
 
         <li>
-          <span>5</span>
+          <span class="numero">5</span>
           <b class="pais">—</b>
           <strong class="distancia">—</strong>
           <em class="direcao">—</em>
         </li>
 
         <li>
-          <span>6</span>
+          <span class="numero">6</span>
           <b class="pais">—</b>
           <strong class="distancia">—</strong>
           <em class="direcao">—</em>
@@ -189,6 +193,13 @@
       </button>
     </section>
   </main>
+
+  <footer>
+    <p>
+      Projeto acadêmico de Estrutura de Dados e Algoritmos —
+      ordenação implementada com Insertion Sort.
+    </p>
+  </footer>
 
   <script
     type="module"
